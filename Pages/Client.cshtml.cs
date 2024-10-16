@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ViteNET.RazorPages.Pages;
 
-public class IndexModel : PageModel
+public class ClientModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private readonly ILogger<ClientModel> _logger;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public ClientModel(ILogger<ClientModel> logger)
     {
         this._logger = logger;
     }

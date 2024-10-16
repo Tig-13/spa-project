@@ -5,6 +5,8 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import TestComponent from './components/TestComponent';
+import ManageUsers from './components/ManageUsers';
+import Navbar from './components/Navbar';
 
 interface User {
     id: number;
@@ -19,8 +21,8 @@ function App() {
         role: 'Guest',
     };
 
-    const [user, setUser] = useState<User>(initialUser); 
-    const [count, setCount] = useState(0); 
+    const [user, setUser] = useState<User>(initialUser);
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -31,7 +33,7 @@ function App() {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
-        setUser(initialUser);  
+        setUser(initialUser);
     };
 
     const fetchTestData = async () => {
@@ -55,22 +57,26 @@ function App() {
     };
 
     useEffect(() => {
-        fetchTestData(); 
-        fetchUsersData(); 
+        fetchTestData();
+        fetchUsersData();
     }, []);
 
     return (
         <Router>
-            <Routes>
-                <Route
-                    path="/"
-                    element={<Home user={user} handleLogout={handleLogout} count={count} setCount={setCount} />}
-                />
-                <Route path="/login" element={<Login setUser={setUser} />} />
-                <Route path="/register" element={<Register setUser={setUser} />} />
-                <Route path="/test" element={<TestComponent />} />
+            <div>
+                <Navbar user={user} />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Home user={user} handleLogout={handleLogout} count={count} setCount={setCount} />}
+                    />
+                    <Route path="/login" element={<Login setUser={setUser} />} />
+                    <Route path="/register" element={<Register setUser={setUser} />} />
+                    <Route path="/manage-users" element={<ManageUsers user={user} />} />
+                    <Route path="/test" element={<TestComponent />} />
 
-            </Routes>
+                </Routes>
+            </div>
         </Router>
     );
 }
