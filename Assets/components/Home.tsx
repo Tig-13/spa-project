@@ -18,13 +18,21 @@ const Home: React.FC<HomeProps> = ({ user, handleLogout, count, setCount }) =>
                     <a href="/register" className="text-blue-500 hover:text-blue-600 transition duration-300">Register</a>
                 </div>
 
-                <h1 className="text-red-600 text-3xl mt-4">Hello, {user.username || "Guest"}!</h1>
+                <h1 className="text-red-600 text-3xl mt-4">Hello, {user.username || "Guest"} ({user.role || "Guest"})</h1>
 
                 <div className="card mt-4">
                     <button onClick={() => setCount(count + 1)} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg shadow-md">
                         count is {count}
                     </button>
                 </div>
+
+                {user.role === 'Admin' && (
+                    <div className="mt-4">
+                        <a href="/manage-users" className="text-blue-500 hover:text-blue-600 transition duration-300">
+                            Manage Users
+                        </a>
+                    </div>
+                )}
 
                 {user.username !== 'Guest' && (
                     <div className="flex justify-center mt-4">

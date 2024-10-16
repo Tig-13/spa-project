@@ -42,7 +42,8 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
-app.MapFallbackToFile("index.html");
+app.MapFallbackToPage("/client");
+
 
 if (app.Environment.IsDevelopment())
 {
