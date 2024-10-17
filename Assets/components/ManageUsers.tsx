@@ -1,16 +1,12 @@
 ﻿import { useEffect, useState } from 'react';
+import { User } from '../assets/global/types';
+import { useAppStore } from '../assets/store/appstore';
 
-interface User {
-    id: number;
-    username: string;
-    role: string;
-}
 
-interface ManageUsersProps {
-    user: User;  
-}
+interface ManageUsersProps {}
 
-const ManageUsers: React.FC<ManageUsersProps> = ({ user }) => {
+const ManageUsers: React.FC<ManageUsersProps> = () => {
+    const { currentUser } = useAppStore();
     const [users, setUsers] = useState<User[]>([]);
     const [editUserId, setEditUserId] = useState<number | null>(null);
     const [editedUser, setEditedUser] = useState<User>({ id: 0, username: '', role: 'User' });
@@ -84,7 +80,7 @@ const ManageUsers: React.FC<ManageUsersProps> = ({ user }) => {
 
     return (
         <div className="max-w-4xl mx-auto mt-12 p-4 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Manage Users - {user.username}</h2>
+            <h2 className="text-2xl font-bold mb-4">Manage Users - {currentUser?.username}</h2>
             <button
                 onClick={() => setShowAddUserForm(!showAddUserForm)}
                 className="bg-green-500 text-white px-4 py-2 rounded mb-4"

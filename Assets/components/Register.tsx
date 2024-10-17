@@ -1,17 +1,16 @@
 ﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppStore } from '../assets/store/appstore';
+import { User } from '../assets/global/types';
 
 interface RegisterProps {
-    setUser: (user: User) => void;
+    
 }
 
-interface User {
-    id: number;
-    username: string;
-    role: string;
-}
 
-const Register: React.FC<RegisterProps> = ({ setUser }) => {
+
+const Register: React.FC<RegisterProps> = () => {
+    const { setCurrentUser } = useAppStore();
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -41,7 +40,7 @@ const Register: React.FC<RegisterProps> = ({ setUser }) => {
 
             if (response.ok) {
                 const user: User = await response.json();
-                setUser(user);
+                setCurrentUser(user);
                 localStorage.setItem('user', JSON.stringify(user));
                 navigate('/');
             } else {

@@ -1,17 +1,14 @@
 ﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../assets/global/types';
+import { useAppStore } from '../assets/store/appstore';
 
 interface LoginProps {
-    setUser: (user: User) => void;
+    
 }
 
-interface User {
-    id: number;
-    username: string;
-    role: string;
-}
-
-const Login: React.FC<LoginProps> = ({ setUser }) => {
+const Login: React.FC<LoginProps> = () => {
+    const { setCurrentUser } = useAppStore();
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -34,7 +31,7 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
 
             if (response.ok) {
                 const user: User = await response.json();
-                setUser(user);
+                setCurrentUser(user);
                 localStorage.setItem('user', JSON.stringify(user));
                 navigate('/');
             } else {

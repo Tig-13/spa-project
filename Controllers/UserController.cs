@@ -10,11 +10,12 @@ namespace SpaProject.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-
+        private readonly ILogger<UserController> _logger;
         private readonly MyContext _context;
-        public UserController(MyContext context)
+        public UserController(MyContext context, ILogger<UserController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet("{id}")]
@@ -30,8 +31,8 @@ namespace SpaProject.Controllers
             return Ok(user);
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody] User newUser)
+        [HttpPost("create/{isInitialSetup}")]
+        public async Task<IActionResult> CreateUser([FromBody] User newUser, bool isInitialSetup = false)
         {
             if (newUser == null)
             {
@@ -40,6 +41,12 @@ namespace SpaProject.Controllers
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
+
+            if (isInitialSetup)
+            {
+                _logger.LogInformation("Admin created: Username: {Username}, Password: {Password}", newUser.Username, newUser.Password);
+            }
+
 
             return Ok(newUser);
         }

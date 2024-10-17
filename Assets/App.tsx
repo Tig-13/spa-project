@@ -7,33 +7,25 @@ import Register from './components/Register';
 import TestComponent from './components/TestComponent';
 import ManageUsers from './components/ManageUsers';
 import Navbar from './components/Navbar';
+import { useAppStore } from './assets/store/appstore';
 
-interface User {
-    id: number;
-    username: string;
-    role: string;
-}
+
 
 function App() {
-    const initialUser: User = {
-        id: 0,
-        username: 'Guest',
-        role: 'Guest',
-    };
 
-    const [user, setUser] = useState<User>(initialUser);
+    const { setCurrentUser, logout } = useAppStore();
     const [count, setCount] = useState(0);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            setCurrentUser(JSON.parse(storedUser));
         }
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('user');
-        setUser(initialUser);
+        logout();
     };
 
     const fetchTestData = async () => {
@@ -64,15 +56,15 @@ function App() {
     return (
         <Router>
             <div>
-                <Navbar user={user} />
+                <Navbar />
                 <Routes>
                     <Route
                         path="/"
-                        element={<Home user={user} handleLogout={handleLogout} count={count} setCount={setCount} />}
+                        element={<Home handleLogout={handleLogout} count={count} setCount={setCount} />}
                     />
-                    <Route path="/login" element={<Login setUser={setUser} />} />
-                    <Route path="/register" element={<Register setUser={setUser} />} />
-                    <Route path="/manage-users" element={<ManageUsers user={user} />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/manage-users" element={<ManageUsers />} />
                     <Route path="/test" element={<TestComponent />} />
 
                 </Routes>

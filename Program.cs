@@ -2,12 +2,17 @@ using SpaProject.Db;
 using Microsoft.EntityFrameworkCore;
 using Vite.AspNetCore; 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
- var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 var Configuration = builder.Configuration;
  builder.Services.AddDbContext<MyContext>(options =>
 options.UseSqlite(Configuration.GetConnectionString("TestDb")));
 
+// Настройка логгера
+builder.Logging.ClearProviders();  // Очищаем стандартные провайдеры логгирования
+builder.Logging.AddConsole();      // Добавляем логирование в консоль
+builder.Logging.AddDebug();        // Логирование в отладочный вывод
 
 // Add services to the container.
 builder.Services.AddRazorPages();
