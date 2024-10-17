@@ -1,17 +1,11 @@
 ﻿import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppStore } from '../assets/store/appstore';
 
-interface NavbarProps {
-    user: User | null;
-}
+interface NavbarProps { }
 
-interface User {
-    id: number;
-    username: string;
-    role: string;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ user }) => {
+const Navbar: React.FC<NavbarProps> = () => {
+    const { currentUser } = useAppStore();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -54,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
                             </Link>
 
                             {/* Меню для гостей */}
-                            {(!user || user.username === "Guest") && (
+                            {(!currentUser || currentUser.username === "Guest") && (
                                 <>
                                     <Link to="/login" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => setIsMenuOpen(false)}>
                                         Login
@@ -66,10 +60,10 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
                             )}
 
                             {/* Меню для залогиненных пользователей */}
-                            {user && user.username !== "Guest" && (
+                            {currentUser && currentUser.username !== "Guest" && (
                                 <>
                                     {/* Клиенты */}
-                                    {user.role === 'User' && (
+                                    {currentUser.role === 'User' && (
                                         <>
                                             <Link to="/appointments" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                                 Book Appointment
@@ -81,7 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
                                     )}
 
                                     {/* Сотрудники */}
-                                    {user.role === 'Employee' && (
+                                    {currentUser.role === 'Employee' && (
                                         <>
                                             <Link to="/work-schedule" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                                 Work Schedule
@@ -99,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
                                     )}
 
                                     {/* Администраторы */}
-                                    {user.role === 'Admin' && (
+                                    {currentUser.role === 'Admin' && (
                                         <>
                                             <Link to="/work-schedule" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                                 Work Schedule for Employees

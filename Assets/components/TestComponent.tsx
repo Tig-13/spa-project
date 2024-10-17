@@ -9,19 +9,19 @@ interface Admin {
 
 const TestComponent: React.FC = () => {
     const [admin, setAdmin] = useState<Admin | null>(null);
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isNewAdmin, setIsNewAdmin] = useState(false); 
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isNewAdmin, setIsNewAdmin] = useState(false);
 
     useEffect(() => {
         const fetchAdmin = async () => {
             try {
-                const response = await fetch('/api/user/check-admin'); 
+                const response = await fetch('/api/user/check-admin');
                 if (response.ok) {
                     const data = await response.json();
-                    setAdmin(data); 
+                    setAdmin(data);
                 } else {
-                    setIsNewAdmin(true); 
+                    setIsNewAdmin(true);
                 }
             } catch (error) {
                 console.error('Error fetching admin:', error);
@@ -32,23 +32,29 @@ const TestComponent: React.FC = () => {
     }, []);
 
     const handleCreateAdmin = async () => {
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+
         try {
-            const response = await fetch('/api/user/create', { 
+            const response = await fetch(`/api/user/create/${isNewAdmin}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: username || 'admin',
-                    password: password || 'FirstAdmin', 
+                    username: 'Administrator', 
+                    password: password || 'FirstAdmin',
                     role: 'Admin',
+                    //isInitialSetup: isNewAdmin
                 }),
             });
 
             if (response.ok) {
                 const newAdmin = await response.json();
                 setAdmin(newAdmin);
-                setIsNewAdmin(false); 
+                setIsNewAdmin(false);
             } else {
                 console.error('Failed to create admin');
             }
@@ -70,18 +76,19 @@ const TestComponent: React.FC = () => {
             ) : isNewAdmin ? (
                 <div>
                     <p>Create a new admin with default credentials.</p>
-                    <input
-                        type="text"
-                        placeholder="New Admin Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="border p-2 mb-2 w-full"
-                    />
+                    <p><strong>Admin Username:</strong> Administrator</p>
                     <input
                         type="password"
                         placeholder="New Admin Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        className="border p-2 mb-2 w-full"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Confirm New Admin Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         className="border p-2 mb-2 w-full"
                     />
                     <button
