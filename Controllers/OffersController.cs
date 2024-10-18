@@ -64,6 +64,18 @@ namespace SpaProject.Controllers
             return await _context.Offers.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Offer>> GetOfferById(int id)
+        {
+            var offer = await _context.Offers.SingleOrDefaultAsync(o => o.OfferId == id);
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(offer);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateOffer([FromBody] Offer newOffer)
         {
