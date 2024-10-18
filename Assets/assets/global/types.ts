@@ -3,3 +3,12 @@
     username: string;
     role: string;
 }
+
+export interface Offer {
+    offerId: number;
+    offerName: string;
+    offerDescription: string;
+    offerPrice: number | null;
+    offerDuration: number;
+    offerImageUrl: string;
+}

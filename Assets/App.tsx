@@ -8,12 +8,15 @@ import TestComponent from './components/TestComponent';
 import ManageUsers from './components/ManageUsers';
 import Navbar from './components/Navbar';
 import { useAppStore } from './assets/store/appstore';
+import { useOfferStore } from './assets/store/offerstore';
 import ViewOffers from './components/ViewOffers';
+import OfferDetails from './components/OfferDetails';
 
 
 function App() {
 
     const { setCurrentUser, logout } = useAppStore();
+    const { setOffers } = useOfferStore();
     const [count, setCount] = useState(0);
 
     useEffect(() => {
@@ -21,7 +24,23 @@ function App() {
         if (storedUser) {
             setCurrentUser(JSON.parse(storedUser));
         }
-    }, []);
+
+        const fetchOffersData = async () => {
+            try {
+                const response = await fetch('/api/offers');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch offers');
+                }
+                const offers = await response.json();
+                setOffers(offers); 
+            } catch (error) {
+                console.error('Error fetching offers:', error);
+            }
+        };
+
+        fetchOffersData(); 
+
+    }, [setCurrentUser, setOffers])
 
     const handleLogout = () => {
         localStorage.removeItem('user');
@@ -67,6 +86,7 @@ function App() {
                     <Route path="/manage-users" element={<ManageUsers />} />
                     <Route path="/test" element={<TestComponent />} />
                     <Route path="/offers" element={<ViewOffers />} />
+                    <Route path="/offers/:id" element={<OfferDetails />} /> 
                 </Routes>
             </div>
         </Router>
