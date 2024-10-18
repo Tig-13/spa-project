@@ -1,5 +1,5 @@
 ﻿import { create } from 'zustand';
-import { Offer } from '../global/types';
+import { Offer, OfferType } from '../global/types';
 
 interface OfferStoreType {
     offers: Offer[];
@@ -8,14 +8,18 @@ interface OfferStoreType {
     getOfferById: (id: number) => Offer | undefined;
     updateOffer: (updatedOffer: Offer) => void; 
     deleteOffer: (id: number) => void; 
+    offerTypes: OfferType[]; 
+    setOfferTypes: (types: OfferType[]) => void; 
 }
 
 export const useOfferStore = create<OfferStoreType>((set, get) => ({
     offers: [],
+    offerTypes: [],
     setOffers: (offers) => set({ offers }),
+    setOfferTypes: (types) => set({ offerTypes: types }),
     addOffer: (offer) => set((state) => ({ offers: [...state.offers, offer] })),
     getOfferById: (id: number) => {
-        const state = get(); 
+        const state = get();
         return state.offers.find((offer) => offer.offerId === id);
     },
     updateOffer: (updatedOffer: Offer) => set((state) => ({
