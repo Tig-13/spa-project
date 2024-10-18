@@ -7,6 +7,7 @@ namespace SpaProject.Db
 {
     public MyContext(DbContextOptions<MyContext> options) : base(options) { }
     public DbSet<User> Users { get; set; }
+    public DbSet<Offer> Offers {get; set;}
 }
 
 }
