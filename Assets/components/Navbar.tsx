@@ -43,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     {isMenuOpen && (
                         <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl">
                             {/* Меню для всех пользователей */}
-                            <Link to="/offers" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                            <Link to="/offers" className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => setIsMenuOpen(false)}>
                                 View Offers
                             </Link>
 

@@ -8,7 +8,7 @@ import TestComponent from './components/TestComponent';
 import ManageUsers from './components/ManageUsers';
 import Navbar from './components/Navbar';
 import { useAppStore } from './assets/store/appstore';
-
+import ViewOffers from './components/ViewOffers';
 
 
 function App() {
@@ -66,7 +66,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/manage-users" element={<ManageUsers />} />
                     <Route path="/test" element={<TestComponent />} />
-
+                    <Route path="/offers" element={<ViewOffers />} />
                 </Routes>
             </div>
         </Router>
